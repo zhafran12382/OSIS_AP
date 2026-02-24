@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured, SUPABASE_NOT_CONFIGURED_MSG } from "@/lib/supabase";
 import { CountdownTimer } from "@/components/countdown-timer";
 import type { Project } from "@/lib/types";
 import { Download, ArrowLeft, Send, CheckCircle } from "lucide-react";
@@ -57,9 +57,7 @@ export default function ProjectDetailPage() {
       return;
     }
     if (!isSupabaseConfigured) {
-      setError(
-        "Supabase belum dikonfigurasi. Pastikan NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY sudah diisi di file .env.local"
-      );
+      setError(SUPABASE_NOT_CONFIGURED_MSG);
       return;
     }
 
