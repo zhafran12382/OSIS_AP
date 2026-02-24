@@ -9,7 +9,7 @@ Aplikasi web manajemen proyek untuk Divisi Akademi Prestasi OSIS. Dibangun denga
 | Frontend & API | Next.js (App Router) + TypeScript |
 | Styling | Tailwind CSS |
 | Backend & Database | Supabase (PostgreSQL) |
-| Deployment | Vercel |
+| Deployment | Vercel atau Netlify |
 
 ## Fitur
 
@@ -36,9 +36,9 @@ Anda membutuhkan **3 akun gratis** berikut:
 |---|---------|--------|------|
 | 1 | **GitHub** | Menyimpan source code | [github.com](https://github.com) |
 | 2 | **Supabase** | Database & file storage | [supabase.com](https://supabase.com) |
-| 3 | **Vercel** | Hosting website | [vercel.com](https://vercel.com) |
+| 3 | **Vercel** atau **Netlify** | Hosting website | [vercel.com](https://vercel.com) / [netlify.com](https://netlify.com) |
 
-> 📖 **Panduan lengkap step-by-step tersedia di [`DEPLOYMENT.md`](./DEPLOYMENT.md)** — termasuk cara setup Supabase, konfigurasi environment variables, dan deploy ke Vercel.
+> 📖 **Panduan lengkap step-by-step tersedia di [`DEPLOYMENT.md`](./DEPLOYMENT.md)** — termasuk cara setup Supabase, konfigurasi environment variables, dan deploy ke **Vercel** maupun **Netlify**.
 
 ### Quick Start (Lokal)
 
@@ -59,7 +59,7 @@ npm run dev                   # Buka http://localhost:3000
 | `ADMIN_USERNAME` | ❌ | Default: `AdminNFBS` |
 | `ADMIN_PASSWORD` | ❌ | Default: `admin` |
 
-> ⚠️ Untuk production, **wajib ubah** `ADMIN_PASSWORD` via environment variables di Vercel.
+> ⚠️ Untuk production, **wajib ubah** `ADMIN_PASSWORD` via environment variables di Vercel/Netlify.
 
 ## Struktur Folder
 

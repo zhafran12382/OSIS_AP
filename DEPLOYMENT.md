@@ -12,7 +12,7 @@ Sebelum mulai, pastikan Anda sudah menyiapkan hal-hal berikut:
 |---|-----------------|------------|---------|
 | 1 | **Akun GitHub** | Untuk menyimpan source code | ✅ Ya |
 | 2 | **Akun Supabase** | Untuk database & file storage | ✅ Ya (Free Tier) |
-| 3 | **Akun Vercel** | Untuk hosting website | ✅ Ya (Hobby Plan) |
+| 3 | **Akun Vercel** atau **Netlify** | Untuk hosting website (pilih salah satu) | ✅ Ya |
 | 4 | **Node.js v18+** | Untuk development lokal (opsional) | ✅ Ya |
 | 5 | **Git** | Untuk mengelola source code | ✅ Ya |
 
@@ -94,21 +94,27 @@ npm install
 
 ---
 
-## Langkah 3: Deploy ke Vercel
+## Langkah 3: Deploy ke Hosting (Pilih Salah Satu)
 
-### 3.1 — Buat Akun Vercel
+> 💡 Anda bisa pilih **Vercel** atau **Netlify**. Keduanya gratis dan mendukung semua fitur aplikasi ini (SSR, API routes, middleware). Fitur yang didapat **sama persis**.
+
+---
+
+### Opsi A: Deploy ke Vercel
+
+#### A.1 — Buat Akun Vercel
 
 1. Buka [vercel.com](https://vercel.com) → klik **"Sign Up"**.
 2. Pilih **"Continue with GitHub"** (gunakan akun GitHub yang sama).
 3. Izinkan akses ke repository Anda.
 
-### 3.2 — Import Project
+#### A.2 — Import Project
 
 1. Di dashboard Vercel, klik **"Add New..."** → **"Project"**.
 2. Cari dan pilih repository **`OSIS_AP`** (atau nama fork Anda).
 3. Vercel akan otomatis mendeteksi bahwa ini adalah project Next.js.
 
-### 3.3 — Isi Environment Variables
+#### A.3 — Isi Environment Variables
 
 Di halaman konfigurasi sebelum deploy, buka bagian **"Environment Variables"** dan tambahkan:
 
@@ -121,12 +127,53 @@ Di halaman konfigurasi sebelum deploy, buka bagian **"Environment Variables"** d
 
 > 💡 Untuk setiap variable, ketik **Key** di kolom kiri, **Value** di kolom kanan, lalu klik **"Add"**.
 
-### 3.4 — Deploy!
+#### A.4 — Deploy!
 
 1. Klik **"Deploy"**.
 2. Tunggu 1–3 menit hingga proses build selesai.
 3. Jika berhasil, Anda akan mendapat URL seperti: `https://osis-ap.vercel.app`
 4. 🎉 **Website Anda sudah online!**
+
+---
+
+### Opsi B: Deploy ke Netlify
+
+> 💡 Netlify mendukung **semua fitur** yang sama dengan Vercel untuk aplikasi ini: Server-Side Rendering (SSR), API Routes, Middleware, dan auto-deploy dari GitHub.
+
+#### B.1 — Buat Akun Netlify
+
+1. Buka [netlify.com](https://www.netlify.com) → klik **"Sign up"**.
+2. Pilih **"Sign up with GitHub"** (gunakan akun GitHub yang sama).
+3. Izinkan akses ke repository Anda.
+
+#### B.2 — Import Project
+
+1. Di dashboard Netlify, klik **"Add new site"** → **"Import an existing project"**.
+2. Pilih **"Deploy with GitHub"**.
+3. Cari dan pilih repository **`OSIS_AP`** (atau nama fork Anda).
+4. Netlify akan otomatis mendeteksi `netlify.toml` dan mengonfigurasi build.
+
+#### B.3 — Isi Environment Variables
+
+Di halaman konfigurasi sebelum deploy, klik **"Add environment variables"** dan tambahkan:
+
+| Key | Value | Keterangan |
+|-----|-------|------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://abcdefgh.supabase.co` | Project URL dari langkah 2.4 |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `eyJhbGciOiJIUzI1NiIs...` | Anon key dari langkah 2.4 |
+| `ADMIN_USERNAME` | `AdminNFBS` | Username admin (ubah jika perlu) |
+| `ADMIN_PASSWORD` | *(password kuat Anda)* | **Wajib diubah** untuk keamanan! |
+
+> 💡 Klik **"New variable"** untuk setiap variable, isi **Key** dan **Value**, lalu klik **"Deploy site"**.
+
+#### B.4 — Deploy!
+
+1. Klik **"Deploy site"**.
+2. Tunggu 2–4 menit hingga proses build selesai.
+3. Jika berhasil, Anda akan mendapat URL seperti: `https://osis-ap.netlify.app`
+4. 🎉 **Website Anda sudah online!**
+
+> 📌 **Catatan:** Jika build gagal, pastikan `netlify.toml` sudah ada di repository (file ini sudah disediakan). File ini memberitahu Netlify cara mem-build aplikasi Next.js.
 
 ---
 
@@ -159,6 +206,7 @@ Setelah deploy berhasil, lakukan pengecekan berikut:
 
 Jika ingin menggunakan domain sendiri (misal: `akademi.osis-sekolah.id`):
 
+### Vercel
 1. Di dashboard Vercel → pilih project → **"Settings"** → **"Domains"**.
 2. Ketik domain Anda dan klik **"Add"**.
 3. Vercel akan memberikan **DNS records** yang perlu Anda tambahkan di provider domain Anda:
@@ -167,6 +215,16 @@ Jika ingin menggunakan domain sendiri (misal: `akademi.osis-sekolah.id`):
    - Value: `cname.vercel-dns.com`
 4. Tunggu propagasi DNS (biasanya 5–30 menit).
 5. Vercel akan otomatis memberikan **SSL/HTTPS** gratis.
+
+### Netlify
+1. Di dashboard Netlify → pilih site → **"Domain management"** → **"Add a domain"**.
+2. Ketik domain Anda dan klik **"Verify"** → **"Add domain"**.
+3. Netlify akan memberikan **DNS records**:
+   - Tipe: `CNAME`
+   - Name: `@` atau subdomain
+   - Value: `[nama-site-anda].netlify.app`
+4. Tunggu propagasi DNS (biasanya 5–30 menit).
+5. Netlify akan otomatis memberikan **SSL/HTTPS** gratis via Let's Encrypt.
 
 ---
 
@@ -178,9 +236,9 @@ Jika ingin menggunakan domain sendiri (misal: `akademi.osis-sekolah.id`):
 - Pastikan RLS policy sudah aktif (ada di `supabase-schema.sql`).
 
 ### "Login admin gagal"
-- Pastikan environment variable `ADMIN_USERNAME` dan `ADMIN_PASSWORD` sudah diatur di Vercel.
+- Pastikan environment variable `ADMIN_USERNAME` dan `ADMIN_PASSWORD` sudah diatur di Vercel/Netlify.
 - Default credentials: `AdminNFBS` / `admin`.
-- Setelah mengubah env var di Vercel, klik **"Redeploy"** agar perubahan berlaku.
+- Setelah mengubah env var, klik **"Redeploy"** (Vercel) atau **"Trigger deploy"** (Netlify) agar perubahan berlaku.
 
 ### "Upload file gagal"
 - Pastikan bucket `attachments` sudah dibuat di Supabase Storage.
@@ -192,9 +250,15 @@ Jika ingin menggunakan domain sendiri (misal: `akademi.osis-sekolah.id`):
 - Pastikan semua environment variables sudah ditambahkan **sebelum** deploy.
 - Coba klik **"Redeploy"** dengan opsi **"Clear Build Cache"**.
 
+### "Build gagal di Netlify"
+- Cek log build di Netlify → **"Deploys"** → klik deploy yang gagal.
+- Pastikan `netlify.toml` ada di root repository.
+- Pastikan semua environment variables sudah ditambahkan sebelum deploy.
+- Coba klik **"Trigger deploy"** → **"Clear cache and deploy site"**.
+
 ### "Halaman 404 Not Found"
 - Pastikan Anda mengakses URL yang benar (misal: `/projects`, `/admin/login`).
-- Cek apakah build berhasil di dashboard Vercel.
+- Cek apakah build berhasil di dashboard Vercel/Netlify.
 
 ---
 
@@ -203,6 +267,7 @@ Jika ingin menggunakan domain sendiri (misal: `akademi.osis-sekolah.id`):
 | Layanan | Batasan Gratis | Cukup untuk OSIS? |
 |---------|----------------|-------------------|
 | **Vercel** (Hobby) | 100 GB bandwidth/bulan, unlimited deploys | ✅ Sangat cukup |
+| **Netlify** (Starter) | 100 GB bandwidth/bulan, 300 build minutes/bulan | ✅ Sangat cukup |
 | **Supabase** (Free) | 500 MB database, 1 GB file storage, 50K API calls/bulan | ✅ Cukup |
 | **GitHub** (Free) | Unlimited public repos | ✅ Cukup |
 
@@ -210,7 +275,7 @@ Jika ingin menggunakan domain sendiri (misal: `akademi.osis-sekolah.id`):
 
 ## 🔄 Cara Update Website
 
-Setiap kali Anda push perubahan ke branch `main` di GitHub, Vercel akan **otomatis re-deploy** website Anda.
+Setiap kali Anda push perubahan ke branch `main` di GitHub, **Vercel dan Netlify** akan **otomatis re-deploy** website Anda.
 
 ```bash
 # Edit file yang diinginkan, lalu:
@@ -219,7 +284,7 @@ git commit -m "Update: deskripsi perubahan"
 git push origin main
 ```
 
-Vercel akan otomatis mendeteksi push baru dan memulai proses build ulang (biasanya 1–2 menit).
+Hosting akan otomatis mendeteksi push baru dan memulai proses build ulang (biasanya 1–3 menit).
 
 ---
 
