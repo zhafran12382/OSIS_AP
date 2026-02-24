@@ -28,52 +28,38 @@ Aplikasi web manajemen proyek untuk Divisi Akademi Prestasi OSIS. Dibangun denga
 - **Export CSV** — Unduh data submission untuk pelaporan
 - **Manajemen Artikel** — CRUD berita dan pengumuman
 
-## Setup & Deployment
+## 🚀 Apa yang Harus Disiapkan untuk Deploy?
 
-### 1. Setup Supabase
+Anda membutuhkan **3 akun gratis** berikut:
 
-1. Buat akun di [supabase.com](https://supabase.com) dan buat project baru.
-2. Buka **SQL Editor** di dashboard Supabase.
-3. Salin dan jalankan isi file `supabase-schema.sql` untuk membuat semua tabel.
-4. Buka **Storage** → buat bucket baru bernama `attachments` dengan akses **Public**.
-5. Salin **Project URL** dan **Anon Key** dari **Settings → API**.
+| # | Layanan | Fungsi | Link |
+|---|---------|--------|------|
+| 1 | **GitHub** | Menyimpan source code | [github.com](https://github.com) |
+| 2 | **Supabase** | Database & file storage | [supabase.com](https://supabase.com) |
+| 3 | **Vercel** | Hosting website | [vercel.com](https://vercel.com) |
 
-### 2. Setup Lokal
+> 📖 **Panduan lengkap step-by-step tersedia di [`DEPLOYMENT.md`](./DEPLOYMENT.md)** — termasuk cara setup Supabase, konfigurasi environment variables, dan deploy ke Vercel.
+
+### Quick Start (Lokal)
 
 ```bash
-# Clone repository
 git clone https://github.com/zhafran12382/OSIS_AP.git
 cd OSIS_AP
-
-# Install dependencies
 npm install
-
-# Buat file .env.local
-cp .env.example .env.local
-# Edit .env.local dan isi dengan URL dan Key Supabase Anda
-
-# Jalankan development server
-npm run dev
+cp .env.example .env.local   # Edit dan isi dengan kredensial Supabase Anda
+npm run dev                   # Buka http://localhost:3000
 ```
 
-Buka [http://localhost:3000](http://localhost:3000).
+### Environment Variables
 
-### 3. Deploy ke Vercel (Gratis)
+| Variable | Wajib? | Keterangan |
+|----------|--------|------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | ✅ | URL project Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ | Public API key Supabase |
+| `ADMIN_USERNAME` | ❌ | Default: `AdminNFBS` |
+| `ADMIN_PASSWORD` | ❌ | Default: `admin` |
 
-1. Push repository ke GitHub.
-2. Buka [vercel.com](https://vercel.com) dan login dengan GitHub.
-3. Klik **"Add New Project"** → pilih repository `OSIS_AP`.
-4. Di bagian **Environment Variables**, tambahkan:
-   - `NEXT_PUBLIC_SUPABASE_URL` → URL project Supabase Anda
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` → Anon key Supabase Anda
-5. Klik **Deploy**. Selesai!
-
-### Login Admin
-
-- **Username:** `AdminNFBS` (default, configurable via `ADMIN_USERNAME` env var)
-- **Password:** `admin` (default, configurable via `ADMIN_PASSWORD` env var)
-
-> ⚠️ Untuk production, ubah credentials via environment variables di Vercel.
+> ⚠️ Untuk production, **wajib ubah** `ADMIN_PASSWORD` via environment variables di Vercel.
 
 ## Struktur Folder
 
