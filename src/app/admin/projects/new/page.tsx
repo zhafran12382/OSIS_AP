@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 
@@ -25,6 +25,13 @@ export default function NewProjectPage() {
       return;
     }
 
+    if (!isSupabaseConfigured) {
+      setError(
+        "Supabase belum dikonfigurasi. Pastikan NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY sudah diisi di file .env.local"
+      );
+      return;
+    }
+
     setSaving(true);
 
     let attachmentUrl: string | null = null;
@@ -37,7 +44,7 @@ export default function NewProjectPage() {
         .upload(`projects/${fileName}`, file);
 
       if (uploadError) {
-        setError("Gagal mengunggah file lampiran.");
+        setError(`Gagal mengunggah file lampiran: ${uploadError.message}`);
         setSaving(false);
         return;
       }
@@ -57,7 +64,7 @@ export default function NewProjectPage() {
     });
 
     if (insertError) {
-      setError("Gagal menyimpan proyek.");
+      setError(`Gagal menyimpan proyek: ${insertError.message}`);
       setSaving(false);
       return;
     }

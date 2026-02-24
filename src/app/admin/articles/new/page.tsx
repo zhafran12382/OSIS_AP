@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 
@@ -23,6 +23,13 @@ export default function NewArticlePage() {
       return;
     }
 
+    if (!isSupabaseConfigured) {
+      setError(
+        "Supabase belum dikonfigurasi. Pastikan NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY sudah diisi di file .env.local"
+      );
+      return;
+    }
+
     setSaving(true);
 
     const { error: insertError } = await supabase.from("articles").insert({
@@ -32,7 +39,7 @@ export default function NewArticlePage() {
     });
 
     if (insertError) {
-      setError("Gagal menyimpan artikel.");
+      setError(`Gagal menyimpan artikel: ${insertError.message}`);
       setSaving(false);
       return;
     }
