@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OSIS Akademi Prestasi — Manajemen Proyek
 
-## Getting Started
+Aplikasi web manajemen proyek untuk Divisi Akademi Prestasi OSIS. Dibangun dengan **Next.js 16**, **TypeScript**, **Tailwind CSS**, dan **Supabase**.
 
-First, run the development server:
+## Tech Stack
+
+| Layer | Teknologi |
+|-------|-----------|
+| Frontend & API | Next.js (App Router) + TypeScript |
+| Styling | Tailwind CSS |
+| Backend & Database | Supabase (PostgreSQL) |
+| Deployment | Vercel |
+
+## Fitur
+
+### Sisi Publik (Tanpa Login)
+- **Beranda** — Hero section, statistik, pengumuman terbaru
+- **Katalog Proyek** — Grid/Card dengan search dan filter (Lomba, Tugas, Event)
+- **Detail Proyek** — Deskripsi, countdown timer, unduh lampiran, form pengumpulan
+- **Sistem Resi** — Siswa mendapat ID Pengumpulan (contoh: `AKT-9281`)
+- **Cek Status** — Masukkan ID untuk melihat status (Pending/Diterima/Ditolak)
+- **Leaderboard & Hall of Fame** — Karya terbaik dan papan peringkat
+
+### Sisi Admin (Login Required)
+- **Dashboard** — Analitik sederhana (total proyek, submission menunggu, partisipan)
+- **Manajemen Proyek** — CRUD proyek dengan deadline dan lampiran
+- **Review Center** — Validasi submission (Terima/Tolak), otomatis update leaderboard
+- **Export CSV** — Unduh data submission untuk pelaporan
+- **Manajemen Artikel** — CRUD berita dan pengumuman
+
+## Setup & Deployment
+
+### 1. Setup Supabase
+
+1. Buat akun di [supabase.com](https://supabase.com) dan buat project baru.
+2. Buka **SQL Editor** di dashboard Supabase.
+3. Salin dan jalankan isi file `supabase-schema.sql` untuk membuat semua tabel.
+4. Buka **Storage** → buat bucket baru bernama `attachments` dengan akses **Public**.
+5. Salin **Project URL** dan **Anon Key** dari **Settings → API**.
+
+### 2. Setup Lokal
 
 ```bash
+# Clone repository
+git clone https://github.com/zhafran12382/OSIS_AP.git
+cd OSIS_AP
+
+# Install dependencies
+npm install
+
+# Buat file .env.local
+cp .env.example .env.local
+# Edit .env.local dan isi dengan URL dan Key Supabase Anda
+
+# Jalankan development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Deploy ke Vercel (Gratis)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push repository ke GitHub.
+2. Buka [vercel.com](https://vercel.com) dan login dengan GitHub.
+3. Klik **"Add New Project"** → pilih repository `OSIS_AP`.
+4. Di bagian **Environment Variables**, tambahkan:
+   - `NEXT_PUBLIC_SUPABASE_URL` → URL project Supabase Anda
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` → Anon key Supabase Anda
+5. Klik **Deploy**. Selesai!
 
-## Learn More
+### Login Admin
 
-To learn more about Next.js, take a look at the following resources:
+- **Username:** `AdminNFBS`
+- **Password:** `admin`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Struktur Folder
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── page.tsx                    # Beranda
+│   ├── layout.tsx                  # Root layout
+│   ├── globals.css                 # Global styles (monochrome theme)
+│   ├── projects/
+│   │   ├── page.tsx                # Katalog Proyek
+│   │   └── [id]/page.tsx           # Detail Proyek + Form Submission
+│   ├── check-status/page.tsx       # Cek Status Pengumpulan
+│   ├── leaderboard/page.tsx        # Leaderboard & Hall of Fame
+│   ├── admin/
+│   │   ├── layout.tsx              # Admin layout wrapper
+│   │   ├── page.tsx                # Dashboard Admin
+│   │   ├── login/page.tsx          # Login Admin
+│   │   ├── projects/
+│   │   │   ├── page.tsx            # Daftar Proyek
+│   │   │   ├── new/page.tsx        # Tambah Proyek
+│   │   │   └── [id]/page.tsx       # Edit Proyek
+│   │   ├── submissions/page.tsx    # Review Center
+│   │   └── articles/
+│   │       ├── page.tsx            # Daftar Artikel
+│   │       └── new/page.tsx        # Tambah Artikel
+│   └── api/
+│       └── auth/route.ts           # API autentikasi admin
+├── components/
+│   ├── admin-layout.tsx            # Layout sidebar admin
+│   ├── bottom-nav.tsx              # Bottom navigation mobile
+│   ├── countdown-timer.tsx         # Countdown timer
+│   ├── project-card.tsx            # Card proyek
+│   └── status-badge.tsx            # Badge status submission
+├── lib/
+│   ├── supabase.ts                 # Supabase client
+│   ├── types.ts                    # TypeScript types
+│   └── utils.ts                    # Utility functions
+└── middleware.ts                    # Auth middleware for /admin
+```
 
-## Deploy on Vercel
+## Database Schema
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Lihat file `supabase-schema.sql` untuk skema lengkap. Tabel utama:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **projects** — Proyek/tugas yang dibuat admin
+- **submissions** — Karya yang dikirim siswa (auto-generate ID seperti `AKT-XXXX`)
+- **leaderboard** — Peringkat siswa berdasarkan poin
+- **articles** — Berita dan pengumuman
+
+## Desain
+
+- **Device Target:** Mobile-first, dioptimalkan untuk Samsung Galaxy Tab A9 (800×1340px)
+- **Tema:** Monochrome (Hitam, Putih, Abu-abu) — tanpa warna neon
+- **Tipografi:** Geist Sans
+- **Touch Target:** Minimal 44×44px
+- **Navigation:** Bottom navigation bar untuk siswa

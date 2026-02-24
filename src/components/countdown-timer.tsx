@@ -25,7 +25,7 @@ function calcTimeLeft(deadline: string): TimeLeft | null {
   };
 }
 
-export default function CountdownTimer({ deadline }: CountdownTimerProps) {
+export function CountdownTimer({ deadline }: CountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(() =>
     calcTimeLeft(deadline)
   );

@@ -10,7 +10,7 @@ const styles: Record<StatusBadgeProps["status"], string> = {
   rejected: "bg-gray-400 text-white",
 };
 
-export default function StatusBadge({ status }: StatusBadgeProps) {
+export function StatusBadge({ status }: StatusBadgeProps) {
   return (
     <span
       className={cn(

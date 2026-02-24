@@ -13,8 +13,11 @@ const navItems = [
   { href: "#", label: "Menu", icon: Menu },
 ];
 
-export default function BottomNav() {
+export function BottomNav() {
   const pathname = usePathname();
+
+  // Hide on admin routes
+  if (pathname.startsWith("/admin")) return null;
 
   return (
     <nav className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-50">

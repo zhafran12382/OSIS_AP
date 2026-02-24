@@ -21,7 +21,7 @@ const sidebarItems = [
   { href: "/admin/articles", label: "Articles", icon: FileText },
 ];
 
-export default function AdminLayout({
+export function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
