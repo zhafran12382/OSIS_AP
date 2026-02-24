@@ -70,8 +70,10 @@ Buka [http://localhost:3000](http://localhost:3000).
 
 ### Login Admin
 
-- **Username:** `AdminNFBS`
-- **Password:** `admin`
+- **Username:** `AdminNFBS` (default, configurable via `ADMIN_USERNAME` env var)
+- **Password:** `admin` (default, configurable via `ADMIN_PASSWORD` env var)
+
+> ⚠️ Untuk production, ubah credentials via environment variables di Vercel.
 
 ## Struktur Folder
 

@@ -6,6 +6,8 @@ import type { Submission } from "@/lib/types";
 import { StatusBadge } from "@/components/status-badge";
 import { Check, X, Download, ExternalLink } from "lucide-react";
 
+const POINTS_PER_APPROVAL = 10;
+
 export default function AdminSubmissionsPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,7 +37,7 @@ export default function AdminSubmissionsPage() {
     // Update submission status
     await supabase
       .from("submissions")
-      .update({ status: "approved", points_awarded: 10 })
+      .update({ status: "approved", points_awarded: POINTS_PER_APPROVAL })
       .eq("id", sub.id);
 
     // Update or insert leaderboard entry
@@ -50,7 +52,7 @@ export default function AdminSubmissionsPage() {
       await supabase
         .from("leaderboard")
         .update({
-          total_score: existing.total_score + 10,
+          total_score: existing.total_score + POINTS_PER_APPROVAL,
           approved_projects_count: existing.approved_projects_count + 1,
         })
         .eq("id", existing.id);
@@ -58,7 +60,7 @@ export default function AdminSubmissionsPage() {
       await supabase.from("leaderboard").insert({
         student_name: sub.student_name,
         student_class: sub.student_class,
-        total_score: 10,
+        total_score: POINTS_PER_APPROVAL,
         approved_projects_count: 1,
       });
     }
