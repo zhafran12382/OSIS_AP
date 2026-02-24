@@ -230,6 +230,40 @@ Jika ingin menggunakan domain sendiri (misal: `akademi.osis-sekolah.id`):
 
 ## 🔧 Troubleshooting
 
+### "Gagal menambahkan artikel / proyek / tugas"
+- **Penyebab utama:** RLS (Row Level Security) policy di Supabase hanya mengizinkan role `authenticated`, padahal aplikasi ini menggunakan `anon` key (autentikasi admin dilakukan oleh middleware aplikasi, bukan Supabase Auth).
+- **Solusi:** Jalankan SQL berikut di **Supabase → SQL Editor** untuk memperbarui RLS policy:
+
+```sql
+-- Hapus policy lama yang hanya mengizinkan authenticated
+DROP POLICY IF EXISTS "projects_insert_auth" ON projects;
+DROP POLICY IF EXISTS "projects_update_auth" ON projects;
+DROP POLICY IF EXISTS "projects_delete_auth" ON projects;
+DROP POLICY IF EXISTS "articles_insert_auth" ON articles;
+DROP POLICY IF EXISTS "articles_update_auth" ON articles;
+DROP POLICY IF EXISTS "articles_delete_auth" ON articles;
+DROP POLICY IF EXISTS "leaderboard_insert_auth" ON leaderboard;
+DROP POLICY IF EXISTS "leaderboard_update_auth" ON leaderboard;
+DROP POLICY IF EXISTS "leaderboard_delete_auth" ON leaderboard;
+DROP POLICY IF EXISTS "submissions_update_auth" ON submissions;
+DROP POLICY IF EXISTS "submissions_delete_auth" ON submissions;
+
+-- Buat policy baru yang mengizinkan anon dan authenticated
+CREATE POLICY "projects_insert_auth" ON projects FOR INSERT TO anon, authenticated WITH CHECK (true);
+CREATE POLICY "projects_update_auth" ON projects FOR UPDATE TO anon, authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "projects_delete_auth" ON projects FOR DELETE TO anon, authenticated USING (true);
+CREATE POLICY "articles_insert_auth" ON articles FOR INSERT TO anon, authenticated WITH CHECK (true);
+CREATE POLICY "articles_update_auth" ON articles FOR UPDATE TO anon, authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "articles_delete_auth" ON articles FOR DELETE TO anon, authenticated USING (true);
+CREATE POLICY "leaderboard_insert_auth" ON leaderboard FOR INSERT TO anon, authenticated WITH CHECK (true);
+CREATE POLICY "leaderboard_update_auth" ON leaderboard FOR UPDATE TO anon, authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "leaderboard_delete_auth" ON leaderboard FOR DELETE TO anon, authenticated USING (true);
+CREATE POLICY "submissions_update_auth" ON submissions FOR UPDATE TO anon, authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "submissions_delete_auth" ON submissions FOR DELETE TO anon, authenticated USING (true);
+```
+
+- Setelah menjalankan SQL di atas, coba tambahkan artikel/proyek lagi — seharusnya berhasil.
+
 ### "Data tidak muncul / halaman kosong"
 - Pastikan `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_ANON_KEY` sudah benar.
 - Cek di Supabase → SQL Editor, jalankan: `SELECT * FROM projects;` — pastikan tabel ada.

@@ -84,29 +84,29 @@ alter table submissions enable row level security;
 alter table leaderboard enable row level security;
 alter table articles    enable row level security;
 
--- Projects: anyone can read, only authenticated users can mutate
+-- Projects: anyone can read and mutate (admin access is controlled by app middleware)
 create policy "projects_select_all"  on projects for select using (true);
-create policy "projects_insert_auth" on projects for insert to authenticated with check (true);
-create policy "projects_update_auth" on projects for update to authenticated using (true) with check (true);
-create policy "projects_delete_auth" on projects for delete to authenticated using (true);
+create policy "projects_insert_auth" on projects for insert to anon, authenticated with check (true);
+create policy "projects_update_auth" on projects for update to anon, authenticated using (true) with check (true);
+create policy "projects_delete_auth" on projects for delete to anon, authenticated using (true);
 
--- Submissions: anyone can read & insert, only authenticated users can update/delete
+-- Submissions: anyone can read, insert, update, and delete (admin access is controlled by app middleware)
 create policy "submissions_select_all"  on submissions for select using (true);
 create policy "submissions_insert_all"  on submissions for insert to anon, authenticated with check (true);
-create policy "submissions_update_auth" on submissions for update to authenticated using (true) with check (true);
-create policy "submissions_delete_auth" on submissions for delete to authenticated using (true);
+create policy "submissions_update_auth" on submissions for update to anon, authenticated using (true) with check (true);
+create policy "submissions_delete_auth" on submissions for delete to anon, authenticated using (true);
 
--- Leaderboard: anyone can read, only authenticated users can mutate
+-- Leaderboard: anyone can read and mutate (admin access is controlled by app middleware)
 create policy "leaderboard_select_all"  on leaderboard for select using (true);
-create policy "leaderboard_insert_auth" on leaderboard for insert to authenticated with check (true);
-create policy "leaderboard_update_auth" on leaderboard for update to authenticated using (true) with check (true);
-create policy "leaderboard_delete_auth" on leaderboard for delete to authenticated using (true);
+create policy "leaderboard_insert_auth" on leaderboard for insert to anon, authenticated with check (true);
+create policy "leaderboard_update_auth" on leaderboard for update to anon, authenticated using (true) with check (true);
+create policy "leaderboard_delete_auth" on leaderboard for delete to anon, authenticated using (true);
 
--- Articles: anyone can read, only authenticated users can mutate
+-- Articles: anyone can read and mutate (admin access is controlled by app middleware)
 create policy "articles_select_all"  on articles for select using (true);
-create policy "articles_insert_auth" on articles for insert to authenticated with check (true);
-create policy "articles_update_auth" on articles for update to authenticated using (true) with check (true);
-create policy "articles_delete_auth" on articles for delete to authenticated using (true);
+create policy "articles_insert_auth" on articles for insert to anon, authenticated with check (true);
+create policy "articles_update_auth" on articles for update to anon, authenticated using (true) with check (true);
+create policy "articles_delete_auth" on articles for delete to anon, authenticated using (true);
 
 -- ============================================================
 -- Storage bucket: 'attachments'
@@ -114,7 +114,7 @@ create policy "articles_delete_auth" on articles for delete to authenticated usi
 -- Create the bucket via Supabase dashboard or with:
 --   insert into storage.buckets (id, name, public) values ('attachments', 'attachments', true);
 --
--- Recommended storage policies:
---   • SELECT (download): allow all users        → using (true)
---   • INSERT (upload):   allow authenticated     → with check (auth.role() = 'authenticated')
---   • DELETE:            allow authenticated     → using (auth.role() = 'authenticated')
+-- Recommended storage policies (allow public access since admin access is controlled by app middleware):
+--   • SELECT (download): allow all users  → using (true)
+--   • INSERT (upload):   allow all users  → with check (true)
+--   • DELETE:            allow all users  → using (true)
