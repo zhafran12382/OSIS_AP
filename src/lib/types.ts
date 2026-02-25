@@ -36,3 +36,11 @@ export interface Article {
   cover_image_url: string | null;
   created_at: string;
 }
+
+export interface BannedStudent {
+  id: string;
+  student_name: string;
+  student_class: string;
+  reason: string | null;
+  banned_at: string;
+}

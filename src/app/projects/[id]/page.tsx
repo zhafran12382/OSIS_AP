@@ -6,20 +6,20 @@ import Link from "next/link";
 import { supabase, isSupabaseConfigured, SUPABASE_NOT_CONFIGURED_MSG } from "@/lib/supabase";
 import { CountdownTimer } from "@/components/countdown-timer";
 import type { Project } from "@/lib/types";
-import { Download, ArrowLeft, Send, CheckCircle } from "lucide-react";
+import { Download, ArrowLeft, Send, CheckCircle, LogIn } from "lucide-react";
+import { useStudentAuth } from "@/lib/student-auth";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
 export default function ProjectDetailPage() {
   const params = useParams();
   const projectId = params.id as string;
+  const { student, setShowLoginModal } = useStudentAuth();
 
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Submission form
-  const [name, setName] = useState("");
-  const [studentClass, setStudentClass] = useState("");
   const [notes, setNotes] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState("");
@@ -44,10 +44,11 @@ export default function ProjectDetailPage() {
     e.preventDefault();
     setError("");
 
-    if (!name.trim() || !studentClass.trim()) {
-      setError("Nama dan Kelas wajib diisi.");
+    if (!student) {
+      setError("Silakan login terlebih dahulu untuk mengirim karya.");
       return;
     }
+
     if (!file && !fileUrl.trim()) {
       setError("Upload file atau masukkan URL karya.");
       return;
@@ -88,8 +89,8 @@ export default function ProjectDetailPage() {
       .from("submissions")
       .insert({
         project_id: projectId,
-        student_name: name.trim(),
-        student_class: studentClass.trim(),
+        student_name: student.name,
+        student_class: student.studentClass,
         file_url: uploadedUrl || null,
         notes: notes.trim() || null,
       })
@@ -208,34 +209,31 @@ export default function ProjectDetailPage() {
             <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
               Form Pengumpulan
             </h2>
+
+            {!student ? (
+              <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6 text-center">
+                <LogIn className="w-8 h-8 mx-auto mb-3 text-gray-400" />
+                <h3 className="font-semibold mb-1">Login Diperlukan</h3>
+                <p className="text-sm text-gray-500 mb-4">
+                  Silakan login terlebih dahulu untuk mengirim karya.
+                </p>
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="inline-flex items-center gap-2 bg-gray-900 text-white rounded-xl px-5 py-3 text-sm font-medium hover:bg-gray-800 transition"
+                >
+                  <LogIn className="w-4 h-4" /> Login Siswa
+                </button>
+              </div>
+            ) : (
             <form
               onSubmit={handleSubmit}
               className="bg-white rounded-xl shadow-md border border-gray-100 p-6 space-y-4"
             >
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Nama Lengkap *
-                </label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 transition"
-                  placeholder="Masukkan nama lengkap"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Kelas *
-                </label>
-                <input
-                  type="text"
-                  value={studentClass}
-                  onChange={(e) => setStudentClass(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 transition"
-                  placeholder="Contoh: 8C"
-                />
+              {/* Show logged-in student info */}
+              <div className="bg-gray-50 rounded-xl px-4 py-3 border border-gray-200">
+                <p className="text-xs text-gray-500 mb-1">Mengirim sebagai:</p>
+                <p className="text-sm font-semibold">{student.name}</p>
+                <p className="text-xs text-gray-500">Kelas {student.studentClass}</p>
               </div>
 
               <div>
@@ -296,6 +294,7 @@ export default function ProjectDetailPage() {
                 )}
               </button>
             </form>
+            )}
           </section>
         )}
       </div>

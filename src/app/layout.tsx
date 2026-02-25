@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { BottomNav } from "@/components/bottom-nav";
+import { StudentAuthProvider } from "@/lib/student-auth";
+import { StudentLoginModal } from "@/components/student-login-modal";
+import { LoginNotification } from "@/components/login-notification";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff2",
@@ -34,8 +37,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
-        <BottomNav />
+        <StudentAuthProvider>
+          <LoginNotification />
+          {children}
+          <BottomNav />
+          <StudentLoginModal />
+        </StudentAuthProvider>
       </body>
     </html>
   );
