@@ -68,13 +68,13 @@ export default async function HomePage() {
       <section className="max-w-3xl mx-auto px-6 -mt-10">
         <div className="grid grid-cols-3 gap-4">
           {[
-            { icon: FolderOpen, label: "Proyek Aktif", value: projectCount ?? 0 },
-            { icon: FileCheck, label: "Karya Terkumpul", value: submissionCount ?? 0 },
-            { icon: Users, label: "Partisipan", value: "—" },
-          ].map((stat, index) => (
+            { icon: FolderOpen, label: "Proyek Aktif", value: projectCount ?? 0, delay: "stagger-1" },
+            { icon: FileCheck, label: "Karya Terkumpul", value: submissionCount ?? 0, delay: "stagger-2" },
+            { icon: Users, label: "Partisipan", value: "—", delay: "stagger-3" },
+          ].map((stat) => (
             <div
               key={stat.label}
-              className={`card-hover bg-white rounded-xl shadow-lg border border-gray-100 p-4 text-center animate-scale-in stagger-${index + 1}`}
+              className={`card-hover bg-white rounded-xl shadow-lg border border-gray-100 p-4 text-center animate-scale-in ${stat.delay}`}
             >
               <stat.icon className="w-5 h-5 mx-auto mb-2 text-gray-500" />
               <p className="text-2xl font-bold">{stat.value}</p>

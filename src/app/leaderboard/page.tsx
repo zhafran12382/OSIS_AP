@@ -38,10 +38,10 @@ export default async function LeaderboardPage() {
 
           {fame.length > 0 ? (
             <div className="grid grid-cols-2 gap-3">
-              {fame.map((sub, index) => (
+              {fame.map((sub) => (
                 <div
                   key={sub.id}
-                  className={`bg-gray-900 rounded-xl p-4 border border-gray-800 hover:border-gray-600 transition-all duration-300 hover:scale-[1.02] animate-scale-in stagger-${Math.min(index + 1, 5)}`}
+                  className="bg-gray-900 rounded-xl p-4 border border-gray-800 hover:border-gray-600 transition-all duration-300 hover:scale-[1.02] animate-scale-in"
                 >
                   <p className="text-xs text-gray-500 font-mono mb-1">
                     {sub.id}
@@ -73,7 +73,6 @@ export default async function LeaderboardPage() {
               <div
                 key={entry.id}
                 className="card-hover flex items-center gap-4 bg-white rounded-xl shadow-sm border border-gray-100 p-4 animate-slide-up"
-                style={{ animationDelay: `${Math.min(index * 0.05, 0.5)}s` }}
               >
                 <div className={`w-10 h-10 flex items-center justify-center rounded-full font-bold text-sm shrink-0 ${index < 3 ? 'bg-gray-900 text-white' : 'bg-gray-100'}`}>
                   {index < 3 ? (
