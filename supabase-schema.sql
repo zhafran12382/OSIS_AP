@@ -85,24 +85,40 @@ alter table leaderboard enable row level security;
 alter table articles    enable row level security;
 
 -- Projects: anyone can read and mutate (admin access is controlled by app middleware)
+drop policy if exists "projects_select_all"  on projects;
+drop policy if exists "projects_insert_auth" on projects;
+drop policy if exists "projects_update_auth" on projects;
+drop policy if exists "projects_delete_auth" on projects;
 create policy "projects_select_all"  on projects for select using (true);
 create policy "projects_insert_auth" on projects for insert to anon, authenticated with check (true);
 create policy "projects_update_auth" on projects for update to anon, authenticated using (true) with check (true);
 create policy "projects_delete_auth" on projects for delete to anon, authenticated using (true);
 
 -- Submissions: anyone can read, insert, update, and delete (admin access is controlled by app middleware)
+drop policy if exists "submissions_select_all"  on submissions;
+drop policy if exists "submissions_insert_all"  on submissions;
+drop policy if exists "submissions_update_auth" on submissions;
+drop policy if exists "submissions_delete_auth" on submissions;
 create policy "submissions_select_all"  on submissions for select using (true);
 create policy "submissions_insert_all"  on submissions for insert to anon, authenticated with check (true);
 create policy "submissions_update_auth" on submissions for update to anon, authenticated using (true) with check (true);
 create policy "submissions_delete_auth" on submissions for delete to anon, authenticated using (true);
 
 -- Leaderboard: anyone can read and mutate (admin access is controlled by app middleware)
+drop policy if exists "leaderboard_select_all"  on leaderboard;
+drop policy if exists "leaderboard_insert_auth" on leaderboard;
+drop policy if exists "leaderboard_update_auth" on leaderboard;
+drop policy if exists "leaderboard_delete_auth" on leaderboard;
 create policy "leaderboard_select_all"  on leaderboard for select using (true);
 create policy "leaderboard_insert_auth" on leaderboard for insert to anon, authenticated with check (true);
 create policy "leaderboard_update_auth" on leaderboard for update to anon, authenticated using (true) with check (true);
 create policy "leaderboard_delete_auth" on leaderboard for delete to anon, authenticated using (true);
 
 -- Articles: anyone can read and mutate (admin access is controlled by app middleware)
+drop policy if exists "articles_select_all"  on articles;
+drop policy if exists "articles_insert_auth" on articles;
+drop policy if exists "articles_update_auth" on articles;
+drop policy if exists "articles_delete_auth" on articles;
 create policy "articles_select_all"  on articles for select using (true);
 create policy "articles_insert_auth" on articles for insert to anon, authenticated with check (true);
 create policy "articles_update_auth" on articles for update to anon, authenticated using (true) with check (true);
@@ -111,10 +127,26 @@ create policy "articles_delete_auth" on articles for delete to anon, authenticat
 -- ============================================================
 -- Storage bucket: 'attachments'
 -- ============================================================
--- Create the bucket via Supabase dashboard or with:
---   insert into storage.buckets (id, name, public) values ('attachments', 'attachments', true);
---
--- Recommended storage policies (allow public access since admin access is controlled by app middleware):
---   • SELECT (download): allow all users  → using (true)
---   • INSERT (upload):   allow all users  → with check (true)
---   • DELETE:            allow all users  → using (true)
+insert into storage.buckets (id, name, public)
+values ('attachments', 'attachments', true)
+on conflict (id) do nothing;
+
+-- Enable RLS on storage.objects (if not already enabled)
+alter table storage.objects enable row level security;
+
+-- Drop existing storage policies to avoid conflicts
+drop policy if exists "attachments_select_all" on storage.objects;
+drop policy if exists "attachments_insert_all" on storage.objects;
+drop policy if exists "attachments_delete_all" on storage.objects;
+
+-- Allow public download from attachments bucket
+create policy "attachments_select_all" on storage.objects
+  for select using (bucket_id = 'attachments');
+
+-- Allow public upload to attachments bucket
+create policy "attachments_insert_all" on storage.objects
+  for insert with check (bucket_id = 'attachments');
+
+-- Allow public delete from attachments bucket
+create policy "attachments_delete_all" on storage.objects
+  for delete using (bucket_id = 'attachments');
