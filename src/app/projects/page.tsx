@@ -40,10 +40,10 @@ export default function ProjectsPage() {
   return (
     <main className="min-h-screen bg-gray-50 pb-24">
       <div className="bg-white border-b border-gray-100 px-6 pt-8 pb-6">
-        <h1 className="text-2xl font-bold mb-4">Katalog Proyek</h1>
+        <h1 className="text-2xl font-bold mb-4 animate-fade-in">Katalog Proyek</h1>
 
         {/* Search */}
-        <div className="relative mb-4">
+        <div className="relative mb-4 animate-slide-up">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
             type="text"
@@ -55,14 +55,14 @@ export default function ProjectsPage() {
         </div>
 
         {/* Category Filter */}
-        <div className="flex gap-2 overflow-x-auto no-scrollbar">
+        <div className="flex gap-2 overflow-x-auto no-scrollbar animate-slide-up stagger-1">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setCategory(cat)}
-              className={`touch-target whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition ${
+              className={`touch-target whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
                 category === cat
-                  ? "bg-gray-900 text-white"
+                  ? "bg-gray-900 text-white scale-105"
                   : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
             >

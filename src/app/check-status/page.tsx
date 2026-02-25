@@ -33,15 +33,15 @@ export default function CheckStatusPage() {
     <main className="min-h-screen bg-gray-50 pb-24">
       <div className="bg-white px-6 pt-8 pb-10 border-b border-gray-100">
         <div className="max-w-md mx-auto text-center">
-          <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-float">
             <Receipt className="w-6 h-6 text-gray-600" />
           </div>
-          <h1 className="text-2xl font-bold mb-2">Cek Status Pengumpulan</h1>
-          <p className="text-sm text-gray-500 mb-6">
+          <h1 className="text-2xl font-bold mb-2 animate-fade-in">Cek Status Pengumpulan</h1>
+          <p className="text-sm text-gray-500 mb-6 animate-slide-up">
             Masukkan ID Pengumpulan yang Anda terima setelah mengirim karya.
           </p>
 
-          <form onSubmit={handleSearch} className="flex gap-2">
+          <form onSubmit={handleSearch} className="flex gap-2 animate-slide-up stagger-1">
             <input
               type="text"
               placeholder="Contoh: AKT-9281"
@@ -51,7 +51,7 @@ export default function CheckStatusPage() {
             />
             <button
               type="submit"
-              className="touch-target bg-gray-900 text-white rounded-xl px-5 py-3 text-sm font-medium hover:bg-gray-800 transition"
+              className="touch-target bg-gray-900 text-white rounded-xl px-5 py-3 text-sm font-medium hover:bg-gray-800 hover:scale-105 active:scale-95 transition-all duration-200"
             >
               <Search className="w-4 h-4" />
             </button>
@@ -76,7 +76,7 @@ export default function CheckStatusPage() {
         )}
 
         {submission && (
-          <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
+          <div className="card-hover bg-white rounded-xl shadow-md border border-gray-100 p-6 animate-scale-in">
             <div className="flex items-center justify-between mb-4">
               <span className="font-mono text-sm font-bold tracking-wider">
                 {submission.id}

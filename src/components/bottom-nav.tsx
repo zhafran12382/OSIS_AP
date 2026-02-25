@@ -68,7 +68,7 @@ export function BottomNav() {
         </div>
       )}
 
-      <nav className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-50">
+      <nav className="fixed bottom-0 left-0 w-full bg-white/80 backdrop-blur-lg border-t border-gray-200 shadow-lg z-50">
         <ul className="flex justify-around items-center h-16">
           {navItems.map((item) => {
             const isActive =
@@ -81,8 +81,8 @@ export function BottomNav() {
                 <Link
                   href={item.href}
                   className={cn(
-                    "flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-gray-400",
-                    isActive && "text-black"
+                    "flex flex-col items-center justify-center min-w-[44px] min-h-[44px] text-gray-400 transition-all duration-200",
+                    isActive && "text-black scale-110"
                   )}
                 >
                   <item.icon className="h-5 w-5" />
