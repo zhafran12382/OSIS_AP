@@ -75,6 +75,15 @@ create table if not exists articles (
   created_at      timestamptz default now()
 );
 
+-- 7. Banned students table
+create table if not exists banned_students (
+  id              uuid        primary key default gen_random_uuid(),
+  student_name    text        not null,
+  student_class   text        not null,
+  reason          text,
+  banned_at       timestamptz default now()
+);
+
 -- ============================================================
 -- Row Level Security (RLS)
 -- ============================================================
@@ -123,6 +132,17 @@ create policy "articles_select_all"  on articles for select using (true);
 create policy "articles_insert_auth" on articles for insert to anon, authenticated with check (true);
 create policy "articles_update_auth" on articles for update to anon, authenticated using (true) with check (true);
 create policy "articles_delete_auth" on articles for delete to anon, authenticated using (true);
+
+-- Banned students: anyone can read, admin can manage (admin access is controlled by app middleware)
+alter table banned_students enable row level security;
+drop policy if exists "banned_students_select_all"  on banned_students;
+drop policy if exists "banned_students_insert_auth" on banned_students;
+drop policy if exists "banned_students_update_auth" on banned_students;
+drop policy if exists "banned_students_delete_auth" on banned_students;
+create policy "banned_students_select_all"  on banned_students for select using (true);
+create policy "banned_students_insert_auth" on banned_students for insert to anon, authenticated with check (true);
+create policy "banned_students_update_auth" on banned_students for update to anon, authenticated using (true) with check (true);
+create policy "banned_students_delete_auth" on banned_students for delete to anon, authenticated using (true);
 
 -- ============================================================
 -- Storage bucket: 'attachments'

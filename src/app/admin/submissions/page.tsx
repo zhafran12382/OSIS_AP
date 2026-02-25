@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import type { Submission } from "@/lib/types";
 import { StatusBadge } from "@/components/status-badge";
-import { Check, X, Download, ExternalLink } from "lucide-react";
+import { Check, X, Download, ExternalLink, Ban } from "lucide-react";
 
 const POINTS_PER_APPROVAL = 10;
 
@@ -74,6 +74,31 @@ export default function AdminSubmissionsPage() {
       .update({ status: "rejected" })
       .eq("id", id);
     fetchSubmissions();
+  }
+
+  async function handleBan(sub: Submission) {
+    const confirmBan = window.confirm(
+      `Apakah Anda yakin ingin memblokir "${sub.student_name}" (${sub.student_class})? Siswa ini tidak akan bisa login lagi.`
+    );
+    if (!confirmBan) return;
+
+    // Check if already banned
+    const { data: existing } = await supabase
+      .from("banned_students")
+      .select("id")
+      .eq("student_name", sub.student_name)
+      .eq("student_class", sub.student_class)
+      .maybeSingle();
+
+    if (!existing) {
+      await supabase.from("banned_students").insert({
+        student_name: sub.student_name,
+        student_class: sub.student_class,
+        reason: "Nama tidak sesuai / tidak pantas",
+      });
+    }
+
+    alert(`"${sub.student_name}" telah diblokir.`);
   }
 
   async function handleExport() {
@@ -185,7 +210,7 @@ export default function AdminSubmissionsPage() {
                 </p>
               )}
 
-              <div className="flex items-center gap-2 mt-3">
+              <div className="flex items-center gap-2 mt-3 flex-wrap">
                 {sub.file_url && (
                   <a
                     href={sub.file_url}
@@ -213,6 +238,14 @@ export default function AdminSubmissionsPage() {
                     </button>
                   </>
                 )}
+
+                <button
+                  onClick={() => handleBan(sub)}
+                  className="touch-target inline-flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 rounded-lg px-3 py-2 hover:bg-red-100 transition"
+                  title="Blokir siswa ini"
+                >
+                  <Ban className="w-3 h-3" /> Ban
+                </button>
               </div>
             </div>
           ))}

@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FolderOpen, Search, Trophy, Menu, X, ShieldCheck, Info } from "lucide-react";
+import { Home, FolderOpen, Search, Trophy, Menu, X, ShieldCheck, Info, LogIn, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useStudentAuth } from "@/lib/student-auth";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
@@ -24,6 +25,7 @@ export function BottomNav() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { student, logout, setShowLoginModal } = useStudentAuth();
 
   // Close menu on outside click
   useEffect(() => {
@@ -54,6 +56,37 @@ export function BottomNav() {
           ref={menuRef}
           className="fixed bottom-20 right-4 z-50 bg-white rounded-xl shadow-xl border border-gray-200 py-2 min-w-[200px]"
         >
+          {/* Student login/status section */}
+          {student ? (
+            <div className="px-4 py-3 border-b border-gray-100">
+              <div className="flex items-center gap-2 mb-1">
+                <User className="h-4 w-4 text-gray-500" />
+                <span className="text-sm font-semibold text-gray-800">{student.name}</span>
+              </div>
+              <span className="text-xs text-gray-500">Kelas {student.studentClass}</span>
+              <button
+                onClick={() => {
+                  logout();
+                  setMenuOpen(false);
+                }}
+                className="flex items-center gap-2 mt-2 text-xs text-gray-500 hover:text-gray-800 transition"
+              >
+                <LogOut className="h-3 w-3" /> Keluar
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                setShowLoginModal(true);
+                setMenuOpen(false);
+              }}
+              className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition w-full border-b border-gray-100"
+            >
+              <LogIn className="h-4 w-4 text-gray-500" />
+              Login Siswa
+            </button>
+          )}
+
           {menuItems.map((item) => (
             <Link
               key={`${item.href}-${item.label}`}
