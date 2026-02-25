@@ -44,8 +44,7 @@ export default async function HomePage() {
             Raih Prestasi.
           </h1>
           <p className="text-gray-400 mb-8 leading-relaxed animate-slide-up stagger-1">
-            Platform manajemen proyek untuk mengumpulkan, mengelola, dan menilai
-            karya siswa secara digital.
+            Sebuah Karya Dari OSIS Kabinet Wirasena Divisi AP
           </p>
           <div className="flex gap-3 animate-slide-up stagger-2">
             <Link

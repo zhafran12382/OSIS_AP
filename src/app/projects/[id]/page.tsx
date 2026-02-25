@@ -136,7 +136,7 @@ export default function ProjectDetailPage() {
           <ArrowLeft className="w-4 h-4" /> Kembali
         </Link>
 
-        <span className="inline-block bg-gray-900 text-white text-xs font-medium rounded-full px-3 py-1 mb-3 animate-fade-in">
+        <span className="inline-block bg-gray-900 text-white text-xs font-medium rounded-full px-3 py-1 mt-2 mb-3 animate-fade-in">
           {project.category}
         </span>
         <h1 className="text-2xl font-bold mb-2 animate-slide-up">{project.title}</h1>
@@ -234,7 +234,7 @@ export default function ProjectDetailPage() {
                   value={studentClass}
                   onChange={(e) => setStudentClass(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 transition"
-                  placeholder="Contoh: XII IPA 1"
+                  placeholder="Contoh: 8C"
                 />
               </div>
 
