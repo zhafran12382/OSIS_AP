@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Lock } from "lucide-react";
 
 export default function AdminLoginPage() {
@@ -83,6 +84,13 @@ export default function AdminLoginPage() {
             {loading ? "Masuk..." : "Masuk"}
           </button>
         </form>
+
+        <p className="text-center text-sm text-gray-500 mt-6">
+          Bukan admin?{" "}
+          <Link href="/" className="text-white hover:underline font-medium">
+            Login sebagai Siswa
+          </Link>
+        </p>
       </div>
     </main>
   );
