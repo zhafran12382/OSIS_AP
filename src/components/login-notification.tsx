@@ -1,14 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LogIn, X } from "lucide-react";
 import { useStudentAuth } from "@/lib/student-auth";
 
 export function LoginNotification() {
   const { student, setShowLoginModal } = useStudentAuth();
   const [dismissed, setDismissed] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  if (student || dismissed) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || student || dismissed) return null;
 
   return (
     <div className="fixed top-0 left-0 right-0 z-30 bg-gray-900 text-white px-4 py-3 flex items-center justify-between gap-3 animate-slide-down">

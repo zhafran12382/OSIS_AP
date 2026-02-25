@@ -54,10 +54,10 @@ export default async function HomePage() {
               Lihat Proyek <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-              href="/check-status"
+              href="/dashboard"
               className="touch-target inline-flex items-center gap-2 border border-gray-600 text-gray-300 font-medium rounded-full px-6 py-3 text-sm hover:bg-gray-800 hover:border-gray-400 transition-all duration-200"
             >
-              Cek Status
+              Dashboard
             </Link>
           </div>
         </div>

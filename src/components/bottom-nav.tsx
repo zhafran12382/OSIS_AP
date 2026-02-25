@@ -3,14 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FolderOpen, Search, Trophy, Menu, X, ShieldCheck, Info, LogIn, LogOut, User } from "lucide-react";
+import { Home, FolderOpen, Trophy, Menu, X, ShieldCheck, LogIn, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStudentAuth } from "@/lib/student-auth";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
   { href: "/projects", label: "Projects", icon: FolderOpen },
-  { href: "/check-status", label: "Status", icon: Search },
+  { href: "/dashboard", label: "Akun", icon: User },
   { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
 ];
 
@@ -18,7 +18,6 @@ const menuItems = [
   { href: "/admin/login", label: "Admin Login", icon: ShieldCheck },
   { href: "/leaderboard", label: "Hall of Fame", icon: Trophy },
   { href: "/projects", label: "Semua Proyek", icon: FolderOpen },
-  { href: "/check-status", label: "Cek Status", icon: Info },
 ];
 
 export function BottomNav() {
