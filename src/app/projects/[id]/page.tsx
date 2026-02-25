@@ -136,13 +136,13 @@ export default function ProjectDetailPage() {
           <ArrowLeft className="w-4 h-4" /> Kembali
         </Link>
 
-        <span className="inline-block bg-gray-900 text-white text-xs font-medium rounded-full px-3 py-1 mb-3">
+        <span className="inline-block bg-gray-900 text-white text-xs font-medium rounded-full px-3 py-1 mb-3 animate-fade-in">
           {project.category}
         </span>
-        <h1 className="text-2xl font-bold mb-2">{project.title}</h1>
+        <h1 className="text-2xl font-bold mb-2 animate-slide-up">{project.title}</h1>
 
         {project.deadline && (
-          <div className="mt-4">
+          <div className="mt-4 animate-slide-up stagger-1">
             <p className="text-xs text-gray-500 mb-2 uppercase tracking-wider font-medium">
               Batas Waktu
             </p>
@@ -153,7 +153,7 @@ export default function ProjectDetailPage() {
 
       <div className="max-w-3xl mx-auto px-6 mt-6 space-y-8">
         {/* Description */}
-        <section>
+        <section className="animate-slide-up stagger-2">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">
             Deskripsi
           </h2>

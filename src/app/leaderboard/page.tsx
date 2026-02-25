@@ -24,13 +24,15 @@ export default async function LeaderboardPage() {
   return (
     <main className="min-h-screen bg-gray-50 pb-24">
       {/* Hall of Fame */}
-      <section className="bg-gray-950 text-white px-6 pt-8 pb-10">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex items-center gap-2 mb-4">
+      <section className="relative bg-gray-950 text-white px-6 pt-8 pb-10 overflow-hidden">
+        <div className="hero-shimmer absolute inset-0" />
+        <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/3 translate-x-1/4 blur-2xl" />
+        <div className="max-w-3xl mx-auto relative z-10">
+          <div className="flex items-center gap-2 mb-4 animate-fade-in">
             <Star className="w-5 h-5" />
             <h1 className="text-xl font-bold">Hall of Fame</h1>
           </div>
-          <p className="text-sm text-gray-400 mb-6">
+          <p className="text-sm text-gray-400 mb-6 animate-slide-up">
             Karya terbaik yang telah disetujui oleh tim OSIS.
           </p>
 
@@ -39,7 +41,7 @@ export default async function LeaderboardPage() {
               {fame.map((sub) => (
                 <div
                   key={sub.id}
-                  className="bg-gray-900 rounded-xl p-4 border border-gray-800"
+                  className="bg-gray-900 rounded-xl p-4 border border-gray-800 hover:border-gray-600 transition-all duration-300 hover:scale-[1.02] animate-scale-in"
                 >
                   <p className="text-xs text-gray-500 font-mono mb-1">
                     {sub.id}
@@ -60,7 +62,7 @@ export default async function LeaderboardPage() {
 
       {/* Leaderboard */}
       <section className="max-w-3xl mx-auto px-6 mt-8">
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-4 animate-fade-in">
           <Trophy className="w-5 h-5 text-gray-700" />
           <h2 className="text-xl font-bold">Papan Peringkat</h2>
         </div>
@@ -70,11 +72,11 @@ export default async function LeaderboardPage() {
             {entries.map((entry, index) => (
               <div
                 key={entry.id}
-                className="flex items-center gap-4 bg-white rounded-xl shadow-sm border border-gray-100 p-4"
+                className="card-hover flex items-center gap-4 bg-white rounded-xl shadow-sm border border-gray-100 p-4 animate-slide-up"
               >
-                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 font-bold text-sm shrink-0">
+                <div className={`w-10 h-10 flex items-center justify-center rounded-full font-bold text-sm shrink-0 ${index < 3 ? 'bg-gray-900 text-white' : 'bg-gray-100'}`}>
                   {index < 3 ? (
-                    <Medal className="w-5 h-5 text-gray-700" />
+                    <Medal className="w-5 h-5" />
                   ) : (
                     index + 1
                   )}
