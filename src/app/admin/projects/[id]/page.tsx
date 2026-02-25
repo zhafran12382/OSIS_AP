@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured, SUPABASE_NOT_CONFIGURED_MSG } from "@/lib/supabase";
 import type { Project } from "@/lib/types";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
@@ -53,6 +53,11 @@ export default function EditProjectPage() {
       return;
     }
 
+    if (!isSupabaseConfigured) {
+      setError(SUPABASE_NOT_CONFIGURED_MSG);
+      return;
+    }
+
     setSaving(true);
 
     const { error: updateError } = await supabase
@@ -66,7 +71,7 @@ export default function EditProjectPage() {
       .eq("id", projectId);
 
     if (updateError) {
-      setError("Gagal menyimpan.");
+      setError(`Gagal menyimpan: ${updateError.message}`);
       setSaving(false);
       return;
     }

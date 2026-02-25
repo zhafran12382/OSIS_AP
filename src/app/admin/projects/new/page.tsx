@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured, SUPABASE_NOT_CONFIGURED_MSG } from "@/lib/supabase";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 
@@ -25,6 +25,11 @@ export default function NewProjectPage() {
       return;
     }
 
+    if (!isSupabaseConfigured) {
+      setError(SUPABASE_NOT_CONFIGURED_MSG);
+      return;
+    }
+
     setSaving(true);
 
     let attachmentUrl: string | null = null;
@@ -37,7 +42,7 @@ export default function NewProjectPage() {
         .upload(`projects/${fileName}`, file);
 
       if (uploadError) {
-        setError("Gagal mengunggah file lampiran.");
+        setError(`Gagal mengunggah file lampiran: ${uploadError.message}`);
         setSaving(false);
         return;
       }
@@ -57,7 +62,7 @@ export default function NewProjectPage() {
     });
 
     if (insertError) {
-      setError("Gagal menyimpan proyek.");
+      setError(`Gagal menyimpan proyek: ${insertError.message}`);
       setSaving(false);
       return;
     }

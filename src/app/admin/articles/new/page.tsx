@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured, SUPABASE_NOT_CONFIGURED_MSG } from "@/lib/supabase";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 
@@ -23,6 +23,11 @@ export default function NewArticlePage() {
       return;
     }
 
+    if (!isSupabaseConfigured) {
+      setError(SUPABASE_NOT_CONFIGURED_MSG);
+      return;
+    }
+
     setSaving(true);
 
     const { error: insertError } = await supabase.from("articles").insert({
@@ -32,7 +37,7 @@ export default function NewArticlePage() {
     });
 
     if (insertError) {
-      setError("Gagal menyimpan artikel.");
+      setError(`Gagal menyimpan artikel: ${insertError.message}`);
       setSaving(false);
       return;
     }

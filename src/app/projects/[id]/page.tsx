@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured, SUPABASE_NOT_CONFIGURED_MSG } from "@/lib/supabase";
 import { CountdownTimer } from "@/components/countdown-timer";
 import type { Project } from "@/lib/types";
 import { Download, ArrowLeft, Send, CheckCircle } from "lucide-react";
@@ -56,6 +56,10 @@ export default function ProjectDetailPage() {
       setError("Ukuran file maksimal 10 MB.");
       return;
     }
+    if (!isSupabaseConfigured) {
+      setError(SUPABASE_NOT_CONFIGURED_MSG);
+      return;
+    }
 
     setSubmitting(true);
 
@@ -69,7 +73,7 @@ export default function ProjectDetailPage() {
         .upload(`submissions/${fileName}`, file);
 
       if (uploadError) {
-        setError("Gagal mengunggah file. Coba lagi.");
+        setError(`Gagal mengunggah file: ${uploadError.message}`);
         setSubmitting(false);
         return;
       }
@@ -93,7 +97,7 @@ export default function ProjectDetailPage() {
       .single();
 
     if (insertError) {
-      setError("Gagal mengirim. Coba lagi.");
+      setError(`Gagal mengirim: ${insertError.message}`);
       setSubmitting(false);
       return;
     }
