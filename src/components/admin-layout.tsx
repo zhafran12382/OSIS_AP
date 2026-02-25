@@ -8,6 +8,7 @@ import {
   FolderOpen,
   Inbox,
   FileText,
+  Users,
   LogOut,
   Menu,
   X,
@@ -19,6 +20,7 @@ const sidebarItems = [
   { href: "/admin/projects", label: "Projects", icon: FolderOpen },
   { href: "/admin/submissions", label: "Submissions", icon: Inbox },
   { href: "/admin/articles", label: "Articles", icon: FileText },
+  { href: "/admin/users", label: "Users", icon: Users },
 ];
 
 export function AdminLayout({
