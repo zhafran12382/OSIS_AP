@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 import type { Article } from "@/lib/types";
 import { ArrowLeft, Calendar } from "lucide-react";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function ArticleDetailPage({
   params,
