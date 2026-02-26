@@ -4,7 +4,7 @@ import { ProjectCard } from "@/components/project-card";
 import type { Project, Article } from "@/lib/types";
 import { ArrowRight, FolderOpen, FileCheck, Users, ChevronRight } from "lucide-react";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function HomePage() {
   const { data: projects } = await supabase
