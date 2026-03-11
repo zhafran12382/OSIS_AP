@@ -132,7 +132,7 @@ export default function ProjectDetailPage() {
       <div className="bg-white border-b border-gray-100 px-6 pt-6 pb-8">
         <Link
           href="/projects"
-          className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-black mb-4 transition"
+          className="flex w-fit items-center gap-1 text-sm text-gray-500 hover:text-black mb-4 transition"
         >
           <ArrowLeft className="w-4 h-4" /> Kembali
         </Link>
